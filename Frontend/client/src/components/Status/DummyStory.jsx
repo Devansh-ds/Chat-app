@@ -1,0 +1,22 @@
+export const stories = [
+  {
+    image:
+      "https://images.pexels.com/photos/31890680/pexels-photo-31890680/free-photo-of-woman-in-white-dress-surrounded-by-monstera-leaves.jpeg",
+  },
+  {
+    image:
+      "https://images.pexels.com/photos/15676265/pexels-photo-15676265/free-photo-of-close-up-of-palm-tree-green-leaves.jpeg",
+  },
+  {
+    image:
+      "https://images.pexels.com/photos/24024088/pexels-photo-24024088/free-photo-of-elegant-facade-of-store.jpeg",
+  },
+  {
+    image:
+      "https://images.pexels.com/photos/31662994/pexels-photo-31662994/free-photo-of-solo-paddleboarding-adventure-on-ocean-waters.jpeg",
+  },
+  {
+    image:
+      "https://images.pexels.com/photos/31708263/pexels-photo-31708263/free-photo-of-authentic-italian-margherita-pizza-close-up.jpeg",
+  },
+];
