@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
 import { BiCommentDetail } from "react-icons/bi";
 import "./HomePage.css";
@@ -16,6 +16,8 @@ import { useNavigate } from "react-router-dom";
 import Profile from "./Profile/Profile";
 import { Menu, MenuItem } from "@mui/material";
 import CreateGroup from "./Group/CreateGroup";
+import { useDispatch, useSelector } from "react-redux";
+import { currentUser, logoutAction } from "../Redux/Auth/Action";
 
 const HomePage = () => {
   const [querys, setQuerys] = useState("");
@@ -24,6 +26,9 @@ const HomePage = () => {
   const [isProfile, setIsProfile] = useState(false);
   const navigate = useNavigate();
   const [isGroup, setIsGroup] = useState(false);
+  const dispatch = useDispatch();
+  const auth = useSelector((store) => store.auth);
+  const token = localStorage.getItem("token");
 
   const handleSearch = () => [];
   const handleClickOnChatCard = () => {
@@ -48,6 +53,23 @@ const HomePage = () => {
     setAnchorEl(null);
   };
   // menu item end
+
+  const handleLogout = () => {
+    dispatch(logoutAction());
+    navigate("/signup");
+  };
+
+  useEffect(() => {
+    if (!auth.reqUser) {
+      navigate("/signup");
+    }
+  }, [auth.reqUser]);
+
+  useEffect(() => {
+    if (token) {
+      dispatch(currentUser(token));
+    }
+  }, [token]);
 
   const handleCreateGroup = () => {
     setIsGroup(true);
@@ -81,7 +103,7 @@ const HomePage = () => {
                     src="https://cdn.pixabay.com/photo/2023/08/07/13/44/tree-8175062_1280.jpg"
                     alt=""
                   />
-                  <p>Devansh</p>
+                  <p>{auth.reqUser?.fullname}</p>
                 </div>
                 {/* icons */}
                 <div className="space-x-2 text-2xl flex">
@@ -112,7 +134,7 @@ const HomePage = () => {
                       <MenuItem onClick={handleCreateGroup}>
                         Create Group
                       </MenuItem>
-                      <MenuItem onClick={handleClose}>Logout</MenuItem>
+                      <MenuItem onClick={handleLogout}>Logout</MenuItem>
                     </Menu>
                   </div>
                 </div>
