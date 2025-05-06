@@ -17,24 +17,50 @@ import Profile from "./Profile/Profile";
 import { Menu, MenuItem } from "@mui/material";
 import CreateGroup from "./Group/CreateGroup";
 import { useDispatch, useSelector } from "react-redux";
-import { currentUser, logoutAction } from "../Redux/Auth/Action";
+import { currentUser, logoutAction, searchUsers } from "../Redux/Auth/Action";
+import { createChat, getUsersChat } from "../Redux/Chat/Action";
 
 const HomePage = () => {
   const [querys, setQuerys] = useState("");
   const [currentChat, setCurrentChat] = useState("");
-  const [content, setContent] = useState(null);
+  const [content, setContent] = useState("");
   const [isProfile, setIsProfile] = useState(false);
   const navigate = useNavigate();
   const [isGroup, setIsGroup] = useState(false);
   const dispatch = useDispatch();
   const auth = useSelector((store) => store.auth);
+  const chat = useSelector((store) => store.chat);
+  const message = useSelector((store) => store.message);
   const token = localStorage.getItem("token");
+  const defaultProfilePic =
+    "https://cdn.pixabay.com/photo/2023/02/18/11/00/icon-7797704_1280.png";
+  const defaultGroupPic =
+    "https://cdn.pixabay.com/photo/2016/11/14/17/39/group-1824145_1280.png";
 
-  const handleSearch = () => [];
-  const handleClickOnChatCard = () => {
-    setCurrentChat(true);
+  const handleSearch = (keyword) => {
+    dispatch(searchUsers({ keyword, token }));
   };
+
+  // chat start
+  const handleClickOnChatCard = (userId) => {
+    // setCurrentChat(true);
+    dispatch(createChat({ data: userId, token: token }));
+    setQuerys("");
+  };
+
   const handleCreateNewMessage = () => {};
+
+  useEffect(() => {
+    dispatch(getUsersChat(token));
+  }, [chat.createdChat, chat.createdGroup]);
+
+  const handleCurrentChat = (item) => {
+    setCurrentChat(item);
+    console.log("handleCurrentChat", item);
+  };
+
+  // chat end
+
   const handleNavigate = () => {
     // navigate("/profile")
     setIsProfile(true);
@@ -159,10 +185,47 @@ const HomePage = () => {
               {/* users to chat with (all users)  */}
               <div className="bg-white overflow-y-scroll px-3 h-[492px] xl:h-[497px]">
                 {querys &&
-                  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1].map((item) => {
+                  auth.searchUser?.map((item) => {
                     return (
-                      <div onClick={handleClickOnChatCard}>
-                        <ChatCard />
+                      <div
+                        key={item.id}
+                        onClick={() => handleClickOnChatCard(item.id)}
+                      >
+                        <ChatCard item={item} />
+                      </div>
+                    );
+                  })}
+                {chat.chats?.length > 0 &&
+                  !querys &&
+                  chat.chats?.map((item) => {
+                    let data;
+                    if (item.chatName) {
+                      data = {
+                        fullname: item.chatName,
+                        profilePicture: item.chatImage || defaultGroupPic,
+                      };
+                    } else if (item.isGroup) {
+                      data = {
+                        fullname: item.chatName || "New Group",
+                        profilePicture: item.chatImage || defaultGroupPic,
+                      };
+                    } else {
+                      item.users.map((user) => {
+                        if (user.id !== auth.reqUser.id) {
+                          data = {
+                            fullname: user.fullname,
+                            profilePicture:
+                              user.profilePicture || defaultProfilePic,
+                          };
+                        }
+                      });
+                    }
+                    return (
+                      <div
+                        key={item.id}
+                        onClick={() => handleCurrentChat(item)}
+                      >
+                        <ChatCard item={data} />
                       </div>
                     );
                   })}
@@ -199,10 +262,24 @@ const HomePage = () => {
               <div className="flex justify-between items-center">
                 <div className="py-3 space-x-4 flex items-center px3">
                   <img
-                    src="https://cdn.pixabay.com/photo/2023/08/07/13/44/tree-8175062_1280.jpg"
+                    src={
+                      currentChat?.isGroup
+                        ? currentChat.chatImage || defaultGroupPic
+                        : auth.reqUser?.id === currentChat.users[0].id
+                        ? currentChat.users[1].profilePicture ||
+                          defaultProfilePic
+                        : currentChat.users[0].profilePicture ||
+                          defaultProfilePic
+                    }
                     className="w-10 h-10 rounded-full"
                   />
-                  <p>Ashish</p>
+                  <p>
+                    {currentChat && currentChat.chatName
+                      ? currentChat.chatName
+                      : auth.reqUser?.id === currentChat?.users[0].id
+                      ? currentChat.users[1].fullname
+                      : currentChat.users[0].fullname}
+                  </p>
                 </div>
                 <div className="py-3 flex space-x-4 items-center">
                   <AiOutlineSearch />
@@ -219,12 +296,13 @@ const HomePage = () => {
                     if (index % 2 === 0) {
                       return (
                         <MessageCard
+                          key={index}
                           content={"Hello message"}
                           isReqUserMessage={true}
                         />
                       );
                     }
-                    return <MessageCard content={"message"} />;
+                    return <MessageCard key={index} content={"message"} />;
                   }
                 )}
               </div>

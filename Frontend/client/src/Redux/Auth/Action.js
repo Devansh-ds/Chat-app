@@ -71,7 +71,7 @@ export const searchUsers = (data) => async (dispatch) => {
     const res = await fetch(
       `${BASE_API_URL}/users/search?query=${data.keyword}`,
       {
-        method: "POST",
+        method: "GET",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${data.token}`,
