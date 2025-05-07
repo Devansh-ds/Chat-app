@@ -19,6 +19,7 @@ import CreateGroup from "./Group/CreateGroup";
 import { useDispatch, useSelector } from "react-redux";
 import { currentUser, logoutAction, searchUsers } from "../Redux/Auth/Action";
 import { createChat, getUsersChat } from "../Redux/Chat/Action";
+import { createMessage, getAllMessage } from "../Redux/Message/Action";
 
 const HomePage = () => {
   const [querys, setQuerys] = useState("");
@@ -36,9 +37,16 @@ const HomePage = () => {
     "https://cdn.pixabay.com/photo/2023/02/18/11/00/icon-7797704_1280.png";
   const defaultGroupPic =
     "https://cdn.pixabay.com/photo/2016/11/14/17/39/group-1824145_1280.png";
+  const [profileName, setProfileName] = useState(auth.reqUser?.fullname);
+  const [profilePic, setProfilePic] = useState(auth.reqUser?.profilePicture);
 
   const handleSearch = (keyword) => {
     dispatch(searchUsers({ keyword, token }));
+  };
+
+  const handleProfile = () => {
+    setIsProfile(true);
+    handleClose();
   };
 
   // chat start
@@ -48,7 +56,24 @@ const HomePage = () => {
     setQuerys("");
   };
 
-  const handleCreateNewMessage = () => {};
+  // message creation
+  const handleCreateNewMessage = () => {
+    dispatch(
+      createMessage({
+        token: token,
+        data: {
+          chatId: currentChat.id,
+          content: content,
+        },
+      })
+    );
+  };
+
+  useEffect(() => {
+    if (currentChat?.id) {
+      dispatch(getAllMessage({ token: token, chatId: currentChat.id }));
+    }
+  }, [currentChat, message.newMessage]);
 
   useEffect(() => {
     dispatch(getUsersChat(token));
@@ -99,6 +124,7 @@ const HomePage = () => {
 
   const handleCreateGroup = () => {
     setIsGroup(true);
+    handleClose();
   };
 
   return (
@@ -111,7 +137,11 @@ const HomePage = () => {
           {/* profile and search and fuck  */}
           {isProfile && (
             <div>
-              <Profile handleCloseOpenProfile={handleCloseOpenProfile} />
+              <Profile
+                setProfileName={setProfileName}
+                handleCloseOpenProfile={handleCloseOpenProfile}
+                setProfilePic={setProfilePic}
+              />
             </div>
           )}
 
@@ -126,10 +156,14 @@ const HomePage = () => {
                 >
                   <img
                     className="rounded-full w-10 h-10 cursor-pointer"
-                    src="https://cdn.pixabay.com/photo/2023/08/07/13/44/tree-8175062_1280.jpg"
+                    src={
+                      profilePic ||
+                      auth.reqUser?.profilePicture ||
+                      defaultProfilePic
+                    }
                     alt=""
                   />
-                  <p>{auth.reqUser?.fullname}</p>
+                  <p>{profileName || auth.reqUser?.fullname || "Person"}</p>
                 </div>
                 {/* icons */}
                 <div className="space-x-2 text-2xl flex">
@@ -156,7 +190,7 @@ const HomePage = () => {
                         "aria-labelledby": "basic-button",
                       }}
                     >
-                      <MenuItem onClick={handleClose}>Profile</MenuItem>
+                      <MenuItem onClick={handleProfile}>Profile</MenuItem>
                       <MenuItem onClick={handleCreateGroup}>
                         Create Group
                       </MenuItem>
@@ -291,20 +325,16 @@ const HomePage = () => {
             {/* message section for chat */}
             <div className="px-10 h-[72vh] mt-16 overflow-y-scroll bg-blue-200">
               <div className="space-y-1 flex flex-col justify-center py-2">
-                {[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1].map(
-                  (item, index) => {
-                    if (index % 2 === 0) {
-                      return (
-                        <MessageCard
-                          key={index}
-                          content={"Hello message"}
-                          isReqUserMessage={true}
-                        />
-                      );
-                    }
-                    return <MessageCard key={index} content={"message"} />;
-                  }
-                )}
+                {message.messages?.length > 0 &&
+                  message.messages?.map((item, index) => {
+                    return (
+                      <MessageCard
+                        key={index}
+                        content={item.content}
+                        isReqUserMessage={item.user.id === auth.reqUser?.id}
+                      />
+                    );
+                  })}
               </div>
             </div>
 
@@ -316,7 +346,7 @@ const HomePage = () => {
               </div>
               <input
                 type="text"
-                onChange={() => setContent(e.target.value)}
+                onChange={(e) => setContent(e.target.value)}
                 className="py-1 outline-none border-none bg-white pl-4 rounded-md w-full text-lg"
                 placeholder="Type message"
                 value={content}

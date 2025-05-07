@@ -5,7 +5,7 @@ import ChatCard from "../ChatCard/ChatCard";
 import { Navigate, useNavigate } from "react-router-dom";
 import NewGroup from "./NewGroup";
 
-const CreateGroup = ({setIsGroup}) => {
+const CreateGroup = ({ setIsGroup }) => {
   const [newGroup, setNewGroup] = useState(false);
   const [groupMember, setGroupMember] = useState(new Set());
   const handleRemoveMember = (item) => {
@@ -15,6 +15,7 @@ const CreateGroup = ({setIsGroup}) => {
   };
   const [query, setQuery] = useState("");
   const handleSearch = () => {};
+  const navigate = useNavigate();
 
   return (
     <div className="w-full h-full">
@@ -22,9 +23,12 @@ const CreateGroup = ({setIsGroup}) => {
         <div>
           {/* header */}
           <div className="flex items-center space-x-10 bg-[#008069] text-white p-8">
-            <BsArrowLeft className="cursor-pointer text-4xl font-bold" onClick={() => {
-                setIsGroup(false)
-            }} />
+            <BsArrowLeft
+              className="cursor-pointer text-4xl font-bold"
+              onClick={() => {
+                setIsGroup(false);
+              }}
+            />
             <p className="text-xl font-semibold">Add Group Participants</p>
           </div>
 

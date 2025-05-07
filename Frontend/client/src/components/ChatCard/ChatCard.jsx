@@ -6,7 +6,7 @@ const ChatCard = ({ item }) => {
       <div className="w-[20%]">
         <img
           src={
-            item.profilePicture ||
+            item?.profilePicture ||
             "https://cdn.pixabay.com/photo/2023/02/18/11/00/icon-7797704_1280.png"
           }
           className="w-14 h-12 rounded-full border"
@@ -14,7 +14,7 @@ const ChatCard = ({ item }) => {
       </div>
       <div className="pl-5 xl:pl-0 w-[80%]">
         <div className="flex justify-between items-center">
-          <p className="text-lg">{item.fullname || "no name"}</p>
+          <p className="text-lg">{item?.fullname || "no name"}</p>
           <p className="text-sm">9:45</p>
         </div>
         <div className="flex justify-between items-center">
