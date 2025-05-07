@@ -4,18 +4,27 @@ import SelectedMember from "./SelectedMember";
 import ChatCard from "../ChatCard/ChatCard";
 import { Navigate, useNavigate } from "react-router-dom";
 import NewGroup from "./NewGroup";
+import { useDispatch, useSelector } from "react-redux";
+import { searchUsers } from "../../Redux/Auth/Action";
+import "./CreateGroup.css";
 
 const CreateGroup = ({ setIsGroup }) => {
   const [newGroup, setNewGroup] = useState(false);
   const [groupMember, setGroupMember] = useState(new Set());
+  const [query, setQuery] = useState("");
+  const dispatch = useDispatch();
+  const token = localStorage.getItem("token");
+  const auth = useSelector((store) => store.auth);
+
   const handleRemoveMember = (item) => {
     const newSet = new Set(groupMember);
     newSet.delete(item);
     setGroupMember(newSet);
   };
-  const [query, setQuery] = useState("");
-  const handleSearch = () => {};
-  const navigate = useNavigate();
+
+  const handleSearch = (keyword) => {
+    dispatch(searchUsers({ keyword, token }));
+  };
 
   return (
     <div className="w-full h-full">
@@ -33,9 +42,9 @@ const CreateGroup = ({ setIsGroup }) => {
           </div>
 
           {/* search members and select them */}
-          <div className="relative bg-white py-4 px-3">
+          <div className="relative bg-white py-4 px-3 h-[10vh]">
             {/* selected members */}
-            <div className="flex space-x-2 flex-wrap space-y-1">
+            <div className="flex max-w-fit space-x-2 pl-2 overflow-x-scroll">
               {groupMember.size > 0 &&
                 Array.from(groupMember).map((item, index) => (
                   <SelectedMember
@@ -50,18 +59,18 @@ const CreateGroup = ({ setIsGroup }) => {
             <input
               type="text"
               onChange={(e) => {
-                handleSearch(e.target.value);
                 setQuery(e.target.value);
+                handleSearch(e.target.value);
               }}
-              className="outline-none border-b border-[#888888] p-2 w-[93%]"
+              className="outline-none z-30 bg-white border-b border-[#888888] p-2 w-[100%]"
               placeholder="Search user"
               value={query}
             />
           </div>
 
-          <div className="bg-white h-[50.2vh] overflow-y-scroll">
+          <div className="bg-white pt-[30px] h-[50.2vh] overflow-y-scroll">
             {query &&
-              [1, 1, 1, 1, 1, 1, 1, 1, 1].map((item, index) => {
+              auth.searchUser?.map((item, index) => {
                 return (
                   <div
                     className="px-3"
@@ -72,7 +81,7 @@ const CreateGroup = ({ setIsGroup }) => {
                     }}
                     key={index}
                   >
-                    <ChatCard />
+                    <ChatCard item={item} />
                   </div>
                 );
               })}
@@ -90,7 +99,7 @@ const CreateGroup = ({ setIsGroup }) => {
           </div>
         </div>
       )}
-      {newGroup && <NewGroup setNewGroup={setNewGroup} />}
+      {newGroup && <NewGroup groupMember={groupMember} setNewGroup={setNewGroup} />}
     </div>
   );
 };
