@@ -68,6 +68,7 @@ const HomePage = () => {
       })
     );
   };
+  // temp
 
   useEffect(() => {
     if (currentChat?.id) {

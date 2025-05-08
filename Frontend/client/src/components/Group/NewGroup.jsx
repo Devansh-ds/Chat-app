@@ -4,7 +4,7 @@ import { BsArrowLeft, BsCheck2 } from "react-icons/bs";
 import { createGroupChat } from "../../Redux/Chat/Action";
 import { useDispatch, useSelector } from "react-redux";
 
-const NewGroup = ({ setNewGroup, groupMember }) => {
+const NewGroup = ({ setNewGroup, groupMember, setIsGroup }) => {
   const [isImageUploading, setIsImageUploading] = useState(false);
   const [groupName, setGroupName] = useState("");
   const [groupPic, setGroupPic] = useState(
@@ -39,7 +39,7 @@ const NewGroup = ({ setNewGroup, groupMember }) => {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+        console.log(data, " img uploaded");
         dispatch(
           createGroupChat({
             token: token,
@@ -51,6 +51,8 @@ const NewGroup = ({ setNewGroup, groupMember }) => {
           })
         );
       });
+    setIsGroup(false);
+    setNewGroup(false);
   };
 
   return (

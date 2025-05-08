@@ -99,7 +99,13 @@ const CreateGroup = ({ setIsGroup }) => {
           </div>
         </div>
       )}
-      {newGroup && <NewGroup groupMember={groupMember} setNewGroup={setNewGroup} />}
+      {newGroup && (
+        <NewGroup
+          setIsGroup={setIsGroup}
+          groupMember={groupMember}
+          setNewGroup={setNewGroup}
+        />
+      )}
     </div>
   );
 };
