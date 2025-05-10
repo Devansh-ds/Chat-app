@@ -21,6 +21,9 @@ import { currentUser, logoutAction, searchUsers } from "../Redux/Auth/Action";
 import { createChat, getUsersChat } from "../Redux/Chat/Action";
 import { createMessage, getAllMessage } from "../Redux/Message/Action";
 
+import SockJS from "sockjs-client/dist/sockjs";
+import { over } from "stompjs";
+
 const HomePage = () => {
   const [querys, setQuerys] = useState("");
   const [currentChat, setCurrentChat] = useState("");
@@ -39,6 +42,79 @@ const HomePage = () => {
     "https://cdn.pixabay.com/photo/2016/11/14/17/39/group-1824145_1280.png";
   const [profileName, setProfileName] = useState(auth.reqUser?.fullname);
   const [profilePic, setProfilePic] = useState(auth.reqUser?.profilePicture);
+
+  // websocket start
+
+  const [stompClient, setStompClient] = useState("");
+  const [isConnect, setIsConnect] = useState(false);
+  const [messages, setMessages] = useState([]);
+
+  const connect = () => {
+    const sock = new SockJS("http://localhost:8080/ws", null, {
+      withCredentials: true,
+    });
+    const temp = over(sock);
+    setStompClient(temp);
+
+    const headers = {
+      Authorization: `Bearer ${token}`,
+      "X-XSRF-TOKEN": getCookie("XSRF-TOKEN"),
+    };
+
+    temp.connect(headers, onConnect, onError);
+  };
+
+  function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    console.log("value in getCookie: ", value);
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) {
+      return parts.pop().split(";").shift();
+    }
+  }
+
+  const onError = (error) => {
+    console.log("ws error: ", error);
+  };
+
+  const onConnect = () => {
+    setIsConnect(true);
+  };
+
+  useEffect(() => {
+    if (message.newMessage && stompClient) {
+      setMessages([...messages, message.newMessage]);
+      stompClient?.send("/app/message", {}, JSON.stringify(message.newMessage));
+    }
+  }, [message.newMessage]);
+
+  const onMessageReciever = (payload) => {
+    console.log("payload recieved: ", JSON.parse(payload));
+    const recievedMessage = JSON.parse(payload);
+    setMessages([...messages, recievedMessage]);
+  };
+
+  useEffect(() => {
+    if (isConnect && stompClient && auth.reqUser && currentChat) {
+      const subscription = stompClient.subscribe(
+        "/group/" + currentChat.id.toString(),
+        onMessageReciever
+      );
+      return () => {
+        subscription.unsubscribe();
+      };
+    }
+  }, []);
+
+  useEffect(() => {
+    setMessages(message.messages);
+  }, [message.messages]);
+
+  useEffect(() => {
+    connect();
+  }, []);
+
+  // websocket end
 
   const handleSearch = (keyword) => {
     dispatch(searchUsers({ keyword, token }));
@@ -326,8 +402,8 @@ const HomePage = () => {
             {/* message section for chat */}
             <div className="px-10 h-[72vh] mt-16 overflow-y-scroll bg-blue-200">
               <div className="space-y-1 flex flex-col justify-center py-2">
-                {message.messages?.length > 0 &&
-                  message.messages?.map((item, index) => {
+                {messages?.length > 0 &&
+                  messages?.map((item, index) => {
                     return (
                       <MessageCard
                         key={index}
