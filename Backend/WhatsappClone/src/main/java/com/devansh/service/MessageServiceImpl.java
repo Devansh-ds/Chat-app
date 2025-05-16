@@ -35,6 +35,7 @@ public class MessageServiceImpl implements MessageService {
                 .timestamp(LocalDateTime.now())
                 .build();
 
+        chat.getMessages().add(message);
         return messageRepository.save(message);
     }
 

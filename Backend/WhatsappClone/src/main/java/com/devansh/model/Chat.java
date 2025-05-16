@@ -1,5 +1,6 @@
 package com.devansh.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -24,7 +25,12 @@ public class Chat {
     private String chatName;
     private String chatImage;
 
-    @OneToMany
+    @ManyToMany
+    @JoinTable(
+            name = "chat_admins",
+            joinColumns = @JoinColumn(name = "chat_id"),
+            inverseJoinColumns = @JoinColumn(name = "admins_id")
+    )
     private Set<User> admins = new HashSet<>();
 
     @Column(name = "is_group")
@@ -34,9 +40,15 @@ public class Chat {
     private User createdBy;
 
     @ManyToMany
+    @JoinTable(
+            name = "chat_users",
+            joinColumns = @JoinColumn(name = "chat_id"),
+            inverseJoinColumns = @JoinColumn(name = "users_id")
+    )
     private Set<User> users = new HashSet<>();
 
     @OneToMany
+    @JsonManagedReference
     private List<Message> messages = new ArrayList<>();
 
 }

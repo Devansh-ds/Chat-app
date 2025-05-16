@@ -77,8 +77,6 @@ public class JwtService {
     }
 
     private Claims extractAllClaims(String jwtToken) {
-        System.out.println("jwt token in extract all claims : " + jwtToken);
-        System.out.println("jwtToken : " + jwtToken.length());
 
         return Jwts
                 .parserBuilder()

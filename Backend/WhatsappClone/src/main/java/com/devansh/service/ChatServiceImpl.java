@@ -100,6 +100,12 @@ public class ChatServiceImpl implements ChatService {
         User user = userService.findUnsafeUserById(userId);
         User mainUser = userService.findByJwtToken(mainUserToken);
 
+        if (!user.getId().equals(mainUser.getId())) {
+            if (chat.getCreatedBy().equals(user)) {
+                throw new ChatException("Group creator cannot be removed");
+            }
+        }
+
         if (chat.getAdmins().contains(mainUser)) {
             chat.getUsers().remove(user);
             if (chat.getAdmins().contains(user)) {
@@ -126,6 +132,8 @@ public class ChatServiceImpl implements ChatService {
                 .findById(chatId)
                 .orElseThrow(() -> new ChatException("Chat not found with id: " + chatId));
         User mainUser = userService.findByJwtToken(mainUserToken);
+
+//        todo: I should remove the user from the chat instead of deleting the whole chat
 
         chatRepository.deleteById(chatId);
     }

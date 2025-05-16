@@ -1,5 +1,6 @@
 package com.devansh.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -24,6 +25,7 @@ public class Message {
     private User user;
 
     @ManyToOne
+    @JsonBackReference
     private Chat chat;
 
 }

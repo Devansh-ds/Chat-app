@@ -69,7 +69,7 @@ public class ChatController {
     }
 
     @PutMapping("/{chatId}")
-    public ResponseEntity<Chat> updateChat(@PathVariable("chatId") Integer chatId,
+    public ResponseEntity<Chat> updateGroup(@PathVariable("chatId") Integer chatId,
                                            @RequestHeader("Authorization") String mainToken,
                                            @RequestBody UpdateChatRequest request)
             throws ChatException, UserException {

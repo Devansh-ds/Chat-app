@@ -24,7 +24,9 @@ public class UserController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<UserDto>> searchUser(@RequestParam String query) {
+    public ResponseEntity<List<UserDto>> searchUser(@RequestParam String query,
+                                                    @RequestHeader("Authorization") String token) throws UserException {
+        User user = userService.findByJwtToken(token);
         return ResponseEntity.ok(userService.searchUser(query));
     }
 
