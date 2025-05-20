@@ -1,86 +1,95 @@
-# 💬 ChatSphere
+# ChatSphere
 
-A basic real-time chat application built for learning and practicing the core concepts of messaging systems, similar to WhatsApp. This project includes user authentication, 1-on-1 messaging, and real-time message updates.
+ChatSphere is a real-time chat application built using Java Spring Boot for the backend and React.js for the frontend. It supports both one-on-one and group chats, featuring real-time messaging, user authentication, and presence indicators.
 
----
+## Features
 
-## 🚀 Features
+* **User Authentication**: Secure JWT-based registration and login system.
+* **Real-Time Messaging**: Instant messaging using WebSockets.
+* **One-on-One & Group Chats**: Engage in private or group conversations.
+* **Message History**: Persist chat history for future reference.
+* **Delivery & Read Receipts**: Know when messages are delivered and read.
+* **Online/Offline Status**: View user presence in real-time.
+* **Responsive Design**: Optimized for various devices and screen sizes.([GitHub][1], [Medium][2])
 
-- 🔐 User Registration & Login (JWT-based)
-- 🧑‍🤝‍🧑 1-on-1 Real-Time Chat and group Chat
-- 📥 Message History
-- ✅ Message Seen & Delivery Status
-- 🟢 Online/Offline Presence 
-- 📱 Responsive Frontend 
-
----
-
-## 🛠️ Tech Stack
+## Tech Stack
 
 ### Backend
-- Java + Spring Boot  
-- WebSocket (for real-time messaging)  
-- Spring Security (JWT Authentication)  
-- MySQL (Database)  
 
-### Frontend 
-- React.js / HTML-CSS-JS  
-- Socket.IO Client or WebSocket API  
+* **Java** with **Spring Boot**
+* **WebSocket** for real-time communication
+* **Spring Security** with JWT for authentication
+* **MySQL** for data storage([GitHub][3], [GitHub][4], [Synology Knowledge Center][5])
 
----
+### Frontend
 
-## 📦 Setup Instructions
+* **React.js**
+* **Socket.IO Client** or native WebSocket API
+* **HTML**, **CSS**, and **JavaScript**([GitHub][4])
 
-### 1. Clone the repository
-```bash
-git clone https://github.com/your-username/chat-sphere.git
-cd chat-sphere
-````
+## Getting Started
 
-### 2. Backend Setup
+### Prerequisites
 
-```bash
-# Open in IDE and configure application.properties (DB, JWT secret, etc.)
-./mvnw spring-boot:run
-```
+* **Java Development Kit (JDK)** installed
+* **Node.js** and **npm** installed
+* **MySQL** database set up
 
-### 3. Frontend Setup (if applicable)
+### Backend Setup
 
-```bash
-cd frontend
-npm install
-npm start
-```
+1. **Clone the repository**:
 
----
+   ```bash
+   git clone https://github.com/Devansh-ds/Chat-app.git
+   cd Chat-app/Backend/WhatsappClone
+   ```
 
-## 🌐 API Endpoints (Example)
 
-| Method | Endpoint                 | Description             |
-| ------ | ------------------------ | ----------------------- |
-| POST   | `/api/auth/signup`       | Register a new user     |
-| POST   | `/api/auth/login`        | Login and get JWT token |
-| GET    | `/api/messages/{userId}` | Get chat history        |
-| WS     | `/chat`                  | WebSocket connection    |
 
----
+2. **Configure the database**:
 
-## 🧠 Learning Goals
+   Update the `application.properties` file with your MySQL credentials:
 
-This project was built to:
+   ```properties
+   spring.datasource.url=jdbc:mysql://localhost:3306/chatsphere
+   spring.datasource.username=your_username
+   spring.datasource.password=your_password
+   ```
 
-* Practice WebSocket and real-time communication
-* Design a basic chat system architecture
 
----
 
-## 🧑‍💻 Author
+3. **Build and run the backend**:
 
-**Devansh Singla**
-[GitHub](https://github.com/Devansh-ds) • [Email](mailto:Devanshsingla9@gmail.com)
+   Use your preferred IDE to build and run the Spring Boot application.
 
----
+### Frontend Setup
 
-## 📄 License
+1. **Navigate to the frontend directory**:
 
-MIT License. Feel free to use, modify, and build on it.
+   ```bash
+   cd ../../Frontend
+   ```
+
+
+
+2. **Install dependencies**:
+
+   ```bash
+   npm install
+   ```
+
+
+
+3. **Start the frontend application**:
+
+   ```bash
+   npm start
+   ```
+
+
+
+The application will run at `http://localhost:3000`.
+
+## Contributing
+
+Contributions are welcome! Please fork the repository and submit a pull request for any enhancements or bug fixes.
