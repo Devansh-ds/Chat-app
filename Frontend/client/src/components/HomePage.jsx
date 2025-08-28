@@ -377,9 +377,9 @@ const HomePage = () => {
                       currentChat?.isGroup
                         ? currentChat.chatImage || defaultGroupPic
                         : auth.reqUser?.id === currentChat.users[0].id
-                        ? currentChat.users[1].profilePicture ||
+                        ? currentChat.users[1]?.profilePicture ||
                           defaultProfilePic
-                        : currentChat.users[0].profilePicture ||
+                        : currentChat.users[0]?.profilePicture ||
                           defaultProfilePic
                     }
                     className="w-10 h-10 rounded-full"
@@ -388,8 +388,8 @@ const HomePage = () => {
                     {currentChat && currentChat.chatName
                       ? currentChat.chatName
                       : auth.reqUser?.id === currentChat?.users[0].id
-                      ? currentChat.users[1].fullname
-                      : currentChat.users[0].fullname}
+                      ? currentChat.users[1]?.fullname
+                      : currentChat.users[0]?.fullname}
                   </p>
                 </div>
                 <div className="py-3 flex space-x-4 items-center">

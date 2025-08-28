@@ -1,6 +1,7 @@
 package com.devansh.securityController;
 
 import com.devansh.config.JwtService;
+import com.devansh.exception.TokenInvalidException;
 import com.devansh.exception.UserAlreadyExistException;
 import com.devansh.exception.UserException;
 import com.devansh.model.User;
@@ -110,19 +111,19 @@ public class AuthenticationService {
         tokenRepository.save(token);
     }
 
-    public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public AuthenticationResponse refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
         final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         final String refreshToken;
         final String userEmail;
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            return;
+            throw new TokenInvalidException("Invalid token");
         }
 
         refreshToken = authHeader.substring(7);
         userEmail = jwtService.extractUsername(refreshToken);
 
-        if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+        if (userEmail != null) {
             var user = userRepository.findByEmail(userEmail)
                     .orElseThrow(() -> new UsernameNotFoundException(userEmail));
 
@@ -130,10 +131,13 @@ public class AuthenticationService {
                 var accessToken = jwtService.generateToken(user);
                 revokeAllUserTokens(user);
                 saveUserToken(user, accessToken);
-                var authResponse = new AuthenticationResponse(accessToken, refreshToken);
-                new ObjectMapper().writeValue(response.getOutputStream(), authResponse);
-            }
 
+                return new AuthenticationResponse(accessToken, refreshToken);
+            } else {
+                throw new TokenInvalidException("refresh token is invalid");
+            }
+        } else {
+            throw new TokenInvalidException("Weird refresh token");
         }
     }
 }

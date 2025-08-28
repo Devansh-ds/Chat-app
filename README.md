@@ -1,5 +1,14 @@
 # 💬 ChatSphere
 
+<p align="center">
+  <img src="screenshots/dashboard.png" alt="Dashboard" width="250"/>
+  <img src="screenshots/profile.png" alt="Profile" width="250"/>
+  <img src="screenshots/namegroup.png" alt="Name group" width="250"/>
+  <img src="screenshots/creategroup.png" alt="Create group" width="250"/>
+</p>
+
+---
+
 A basic real-time chat application built for learning and practicing the core concepts of messaging systems, similar to WhatsApp. This project includes user authentication, 1-on-1 messaging, and real-time message updates.
 
 ---
@@ -10,32 +19,35 @@ A basic real-time chat application built for learning and practicing the core co
 - 🧑‍🤝‍🧑 1-on-1 Real-Time Chat and group Chat
 - 📥 Message History
 - ✅ Message Seen & Delivery Status
-- 🟢 Online/Offline Presence 
-- 📱 Responsive Frontend 
+- 🟢 Online/Offline Presence
+- 📱 Responsive Frontend
 
 ---
 
 ## 🛠️ Tech Stack
 
 ### Backend
-- Java + Spring Boot  
-- WebSocket (for real-time messaging)  
-- Spring Security (JWT Authentication)  
-- MySQL (Database)  
 
-### Frontend 
-- React.js / HTML-CSS-JS  
-- Socket.IO Client or WebSocket API  
+- Java + Spring Boot
+- WebSocket (for real-time messaging)
+- Spring Security (JWT Authentication)
+- MySQL (Database)
+
+### Frontend
+
+- React.js / HTML-CSS-JS
+- Socket.IO Client or WebSocket API
 
 ---
 
 ## 📦 Setup Instructions
 
 ### 1. Clone the repository
+
 ```bash
 git clone https://github.com/your-username/chat-sphere.git
 cd chat-sphere
-````
+```
 
 ### 2. Backend Setup
 
@@ -69,8 +81,8 @@ npm start
 
 This project was built to:
 
-* Practice WebSocket and real-time communication
-* Design a basic chat system architecture
+- Practice WebSocket and real-time communication
+- Design a basic chat system architecture
 
 ---
 
