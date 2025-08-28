@@ -1,7 +1,7 @@
 # ChatSphere
 
+<img src="screenshots/dashboard.png" alt="Dashboard"/>
 <p align="center">
-  <img src="screenshots/dashboard.png" alt="Dashboard" width="250"/>
   <img src="screenshots/profile.png" alt="Profile" width="250"/>
   <img src="screenshots/namegroup.png" alt="Name group" width="250"/>
   <img src="screenshots/creategroup.png" alt="Create group" width="250"/>
@@ -13,20 +13,20 @@ A basic real-time chat application built for learning and practicing the core co
 
 ## Features
 
-* **User Authentication**: Secure JWT-based registration and login system.
-* **Real-Time Messaging**: Instant messaging using WebSockets.
-* **One-on-One & Group Chats**: Engage in private or group conversations.
-* **Message History**: Persist chat history for future reference.
-* **Delivery & Read Receipts**: Know when messages are delivered and read.
-* **Online/Offline Status**: View user presence in real-time.
-* **Responsive Design**: Optimized for various devices and screen sizes.([GitHub][1], [Medium][2])
+- **User Authentication**: Secure JWT-based registration and login system.
+- **Real-Time Messaging**: Instant messaging using WebSockets.
+- **One-on-One & Group Chats**: Engage in private or group conversations.
+- **Message History**: Persist chat history for future reference.
+- **Delivery & Read Receipts**: Know when messages are delivered and read.
+- **Online/Offline Status**: View user presence in real-time.
+- **Responsive Design**: Optimized for various devices and screen sizes.([GitHub][1], [Medium][2])
 
-- 🔐 User Registration & Login (JWT-based)
-- 🧑‍🤝‍🧑 1-on-1 Real-Time Chat and group Chat
-- 📥 Message History
-- ✅ Message Seen & Delivery Status
-- 🟢 Online/Offline Presence
-- 📱 Responsive Frontend
+* 🔐 User Registration & Login (JWT-based)
+* 🧑‍🤝‍🧑 1-on-1 Real-Time Chat and group Chat
+* 📥 Message History
+* ✅ Message Seen & Delivery Status
+* 🟢 Online/Offline Presence
+* 📱 Responsive Frontend
 
 ---
 
@@ -46,9 +46,9 @@ A basic real-time chat application built for learning and practicing the core co
 
 ### Frontend
 
-* **React.js**
-* **Socket.IO Client** or native WebSocket API
-* **HTML**, **CSS**, and **JavaScript**([GitHub][4])
+- **React.js**
+- **Socket.IO Client** or native WebSocket API
+- **HTML**, **CSS**, and **JavaScript**([GitHub][4])
 
 ### 1. Clone the repository
 
@@ -59,9 +59,9 @@ cd chat-sphere
 
 ### Prerequisites
 
-* **Java Development Kit (JDK)** installed
-* **Node.js** and **npm** installed
-* **MySQL** database set up
+- **Java Development Kit (JDK)** installed
+- **Node.js** and **npm** installed
+- **MySQL** database set up
 
 ### Backend Setup
 
@@ -71,8 +71,6 @@ cd chat-sphere
    git clone https://github.com/Devansh-ds/Chat-app.git
    cd Chat-app/Backend/WhatsappClone
    ```
-
-
 
 2. **Configure the database**:
 
@@ -87,7 +85,6 @@ cd chat-sphere
 - Practice WebSocket and real-time communication
 - Design a basic chat system architecture
 
-
 3. **Build and run the backend**:
 
    Use your preferred IDE to build and run the Spring Boot application.
@@ -100,23 +97,17 @@ cd chat-sphere
    cd ../../Frontend
    ```
 
-
-
 2. **Install dependencies**:
 
    ```bash
    npm install
    ```
 
-
-
 3. **Start the frontend application**:
 
    ```bash
    npm start
    ```
-
-
 
 The application will run at `http://localhost:3000`.
 
